@@ -9,6 +9,11 @@ public class Bullets : MonoBehaviour
    public GameObject PlayerObject;
 
 
+void Start()
+{
+   StartCoroutine(BulletExpire());
+
+}
 void OnCollisionEnter2D(Collision2D collision)
    {
        Debug.Log(collision.gameObject.tag);
@@ -26,5 +31,11 @@ void OnCollisionEnter2D(Collision2D collision)
         }
 
    }
+
+ IEnumerator BulletExpire()
+ { 
+    yield return new WaitForSeconds(3);
+    Destroy(this.gameObject);
+ }
 
 }

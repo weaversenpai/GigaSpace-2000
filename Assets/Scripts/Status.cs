@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Status : MonoBehaviour
 {
@@ -36,8 +37,6 @@ public class Status : MonoBehaviour
 
         if (TextValue == 1)
         {
-            UI_Status.gameObject.SetActive(true);
-            Debug.Log(UI_Status.gameObject);
             UI_Status.text = "KILL 50 ENEMIES!";
             StartCoroutine(Text_Mode(0));
 
@@ -50,7 +49,13 @@ public class Status : MonoBehaviour
 
         }
 
-        
+        if (TextValue == 3)
+
+        {
+
+            UI_Status.text = "YOU DIED, BRO! OH NO!";
+    	    StartCoroutine(Text_Mode(2));
+        }
     }
 
     IEnumerator Text_Mode(int Blah)
@@ -64,6 +69,11 @@ public class Status : MonoBehaviour
             yield return new WaitForSeconds(5);
             UI_Status.text = "";
 
+        }
+
+        if (Blah == 2)
+        {            
+        SceneManager.LoadScene("Level 1");
         }
         
         yield return null;

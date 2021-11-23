@@ -9,31 +9,32 @@ public class Player_Health : MonoBehaviour
 
     public int Health;
     public float DamageCooldown;
-    public float TimePassed = 0.0f;
     public GameObject deathEffect;
     public GameObject hitEffect;
-    
+    private GameObject StatusText;
     public GameObject HealthUI;
+
+    private string CollisionTag;
 
     void Start()
     {
-
+        CollisionTag = "Enemy";
 
     }
-    private void OnTriggerEnter2D(Collider2D collisionObject)
+    private void OnCollisionEnter2D(Collision2D collisionObject)
     {
-        TimePassed += Time.deltaTime * 30f;
-        Debug.Log("Trigger was entered, time is " + TimePassed);
-        if (collisionObject.gameObject.CompareTag("Enemy") && TimePassed > DamageCooldown)
+
+        if (collisionObject.gameObject.CompareTag(CollisionTag))
         {
             Health -= 1;
+            CollisionTag = "Banana";
             Debug.Log("Player Health is now" + Health);
             GameObject hitEffects = Instantiate(hitEffect, this.transform.position, this.transform.rotation);
             hitEffects.transform.SetParent(this.transform);
             Destroy(hitEffects, 3);
-            TimePassed = 0;
             Transform child = HealthUI.transform.GetChild(Health);
             child.gameObject.SetActive(false);
+            StartCoroutine(NoDamageWaiter());
         }
 
     }
@@ -50,11 +51,21 @@ public class Player_Health : MonoBehaviour
     
     public void Die()
     {
+
         GameObject deathEffects = Instantiate(deathEffect, transform.position, Quaternion.identity);
         Destroy(deathEffects, 3);
         Destroy(gameObject);
+        StatusText = GameObject.FindGameObjectWithTag("Status");
+        StatusText.GetComponent<Status>().Text_Changing(3);
 
     }
+     IEnumerator NoDamageWaiter()
+    {
+        yield return new WaitForSeconds(2);
+        CollisionTag = "Enemy";
+        yield return null;
+    }
+
   }
 
   /*      

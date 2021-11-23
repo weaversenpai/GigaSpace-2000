@@ -17,11 +17,12 @@ public class Next_Level : MonoBehaviour
         
     }
 
-     void OnTriggerEnter(Collider other)
+     void OnTriggerEnter2D(Collider2D other)
      {
          if (other.tag == "Player")
          {
-             SceneManager.LoadScene("Level 2"); // loads scene When player enter the trigger collider
+             SceneManager.LoadScene("Level 2");
+             SceneManager.UnloadSceneAsync("Level 1");
          }
      }
 }
